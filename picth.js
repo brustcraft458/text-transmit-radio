@@ -17,7 +17,7 @@ formSubmit.addEventListener("click", () => {
 
 // Play Audio
 async function playback(binaryData) {
-    const timeDelay = 50
+    const timeDelay = 150
     for (let i = 0; i < binaryData.length; i++) {
         const bin = binaryData[i]
         
@@ -45,7 +45,7 @@ async function playNote(note, time) {
         osc.connect(audioCtx.destination)
         osc.start()
     }
-    
+
     osc.frequency.setValueAtTime(note, audioCtx.currentTime)
     await sleep(time)
     osc.frequency.setValueAtTime(10, audioCtx.currentTime)
