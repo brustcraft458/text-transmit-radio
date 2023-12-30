@@ -1,6 +1,6 @@
 // Audio context
 const AudioContext = window.AudioContext || window.webkitAudioContext
-var audioCtx, osc
+var audioCtx, gainNode, osc
 
 // Init Component
 const form = document.querySelector("#text-form")
@@ -17,38 +17,39 @@ formSubmit.addEventListener("click", () => {
 
 // Play Audio
 async function playback(binaryData) {
-    const timeDelay = 150
+    const timeDelay = 800
     for (let i = 0; i < binaryData.length; i++) {
         const bin = binaryData[i]
         
         // Play
         if (bin == '1') {
-            await playNote(1200, timeDelay)
+            await playNote(1000, 1.0, timeDelay)
         } else if (bin == '0') {
-            await playNote(600, timeDelay)
+            await playNote(1000, 0.1, timeDelay)
         }
 
         // End
-        await playNote(20, timeDelay)
+        await playNote(0, 0.0, timeDelay)
     }
 }
 
 // Note
-async function playNote(note, time) {
+async function playNote(note, volume, time) {
     if (!osc || !osc.context || osc.context.state != 'running') {
         // Create oscillator
         audioCtx = new AudioContext()
-        
         osc = audioCtx.createOscillator()
-        osc.frequency.setValueAtTime(0, audioCtx.currentTime)
+        gainNode = audioCtx.createGain();
 
-        osc.connect(audioCtx.destination)
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
         osc.start()
     }
 
     osc.frequency.setValueAtTime(note, audioCtx.currentTime)
+    gainNode.gain.setValueAtTime(volume, audioCtx.currentTime);
+
     await sleep(time)
-    osc.frequency.setValueAtTime(10, audioCtx.currentTime)
 }
 
 // Text to Binary
