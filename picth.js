@@ -7,7 +7,7 @@ const icon = document.querySelector("#icon-radio")
 const form = document.querySelector("#text-form")
 const formInput = form.querySelector("#text")
 const formButton = form.querySelector("#button-submit")
-const connectButton = form.querySelector("#button-connect")
+//const connectButton = form.querySelector("#button-connect")
 
 // Button
 formButton.addEventListener("click", () => {
@@ -19,15 +19,15 @@ formButton.addEventListener("click", () => {
     playback(binary)
 })
 
-connectButton.addEventListener("click", async() => {
+/*connectButton.addEventListener("click", async() => {
     await playback("000000000000000000000000")
     await playback("111111111111111111111111")
     await playback("                        ")
-})
+})*/
 
 // Play Audio
 async function playback(binaryData) {
-    const timeDelay = 350
+    const timeDelay = 345
     icon.classList.remove("border-secondary")
 
     for (let i = 0; i < binaryData.length; i++) {
@@ -43,7 +43,7 @@ async function playback(binaryData) {
             await playNote(500, 0.1, timeDelay)
             icon.classList.remove("border-warning")
         } else {
-            await playNote(500, 0.035, timeDelay * 2)
+            await playNote(0, 0.0, timeDelay * 4)
         }
 
         // End
